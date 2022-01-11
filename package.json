@@ -1,0 +1,31 @@
+{
+  "name": "@aersoftware/react-use-action-cable",
+  "version": "0.0.9",
+  "description": "Hooks to easily use Rails Action Cable in your React (Native) application",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "npm i",
+    "build": "babel src --out-dir dist"
+  },
+  "author": "Jacco van der Plaat <jacco.vanderplaat@aer.nl> (aer.nl)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aersoftware/react-use-action-cable"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^17.0.2"
+  },
+  "dependencies": {
+    "@rails/actioncable": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/cli": "^7.16.7",
+    "copyfiles": "^2.4.1"
+  }
+}
