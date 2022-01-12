@@ -5,11 +5,24 @@ global.addEventListener = () => {};
 
 global.removeEventListener = () => {};
 
-export function useActionCable(url, verbose = false) {
+const log = (x) => {
+  if(x.verbose) console[x.type](`useActionCable: ${x.message}`)
+}
+
+export function useActionCable(url, {verbose} = {verbose: false}) {
   const actionCable = useMemo(() => createConsumer(url), []);
   useEffect(() => {
+    log({
+      verbose: verbose,
+      type: 'info',
+      message: 'Created Action Cable'
+    });
     return () => {
-      if (verbose) console.info('Disconnect Action Cable');
+      log({
+        verbose: verbose,
+        type: 'info',
+        message: 'Disconnected Action Cable'
+      });
       actionCable.disconnect();
     };
   }, []);
@@ -17,7 +30,8 @@ export function useActionCable(url, verbose = false) {
     actionCable
   };
 }
-export function useChannel(actionCable, verbose = false) {
+
+export function useChannel(actionCable, {verbose} = {verbose: false}) {
   const [queue, setQueue] = useState([]);
   const [connected, setConnected] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -29,24 +43,44 @@ export function useChannel(actionCable, verbose = false) {
   }, []);
 
   const subscribe = (data, callbacks) => {
-    if (verbose) console.info(`useActionCable - INFO: Connecting to ${data.channel}`);
+    log({
+      verbose: verbose,
+      type: 'info',
+      message: `Connecting to ${data.channel}`
+    });
     const channel = actionCable.subscriptions.create(data, {
       received: x => {
-        if (verbose) console.info('useActionCable - INFO: Received ' + JSON.stringify(x));
+        log({
+          verbose: verbose,
+          type: 'info',
+          message: `Received ${JSON.stringify(x)}`
+        });
         if (callbacks.received) callbacks.received(x);
       },
       initialized: () => {
-        if (verbose) console.info('useActionCable - INFO: Init ' + data.channel);
+        log({
+          verbose: verbose,
+          type: 'info',
+          message: `Init ${data.channel}`
+        });
         setSubscribed(true);
         if (callbacks.initialized) callbacks.initialized();
       },
       connected: () => {
-        if (verbose) console.info('useActionCable - INFO: Connected to ' + data.channel);
+        log({
+          verbose: verbose,
+          type: 'info',
+          message: `Connected to ${data.channel}`
+        });
         setConnected(true);
         if (callbacks.connected) callbacks.connected();
       },
       disconnected: () => {
-        if (verbose) console.info('useActionCable - INFO: Disconnected');
+        log({
+          verbose: verbose,
+          type: 'info',
+          message: `Disconnected`
+        });
         setConnected(false);
         if (callbacks.disconnected) callbacks.disconnected();
       }
@@ -58,7 +92,11 @@ export function useChannel(actionCable, verbose = false) {
     setSubscribed(false);
 
     if (channelRef.current) {
-      if (verbose) console.info('useActionCable - INFO: Unsubscribing from ' + channelRef.current.identifier);
+      log({
+        verbose: verbose,
+        type: 'info',
+        message: `Unsubscribing from ${channelRef.current.identifier}`
+      });
       actionCable.subscriptions.remove(channelRef.current);
       channelRef.current = null;
     }
@@ -68,7 +106,11 @@ export function useChannel(actionCable, verbose = false) {
     if (subscribed && connected && queue.length > 0) {
       processQueue();
     } else if ((!subscribed || !connected) && queue.length > 0) {
-      if (verbose) console.info(`useActionCable - INFO: Queue paused. Subscribed: ${subscribed}. Connected: ${connected}. Queue length: ${queue.length}`);
+      log({
+        verbose: verbose,
+        type: 'info',
+        message: `Queue paused. Subscribed: ${subscribed}. Connected: ${connected}. Queue length: ${queue.length}`
+      });
     }
   }, [queue[0], connected, subscribed]);
 
@@ -83,12 +125,20 @@ export function useChannel(actionCable, verbose = false) {
         return q;
       });
     } catch {
-      if (verbose) console.warn(`useActionCable - WARN: Unable to perform ${action}. It will stay at the front of the queue.`);
+      log({
+        verbose: verbose,
+        type: 'warn',
+        message: `Unable to perform ${action}. It will stay at the front of the queue.`
+      });
     }
   };
 
   const enqueue = (action, payload) => {
-    if (verbose) console.info('useActionCable - INFO: Adding action to queue - ' + action + ': ' + JSON.stringify(payload));
+    log({
+      verbose: verbose,
+      type: 'info',
+      message: `Adding action to queue - ${action}: ${JSON.stringify(payload)}`
+    });
     setQueue(prevState => [...prevState, {
       type: action,
       payload: payload
@@ -99,7 +149,11 @@ export function useChannel(actionCable, verbose = false) {
     if (subscribed && !connected) throw 'useActionCable - ERROR: not connected';
     if (!subscribed) throw 'useActionCable - ERROR: not subscribed';
     try {
-      if (verbose) console.info(`useActionCable - INFO: Sending ${action} with payload ${JSON.stringify(payload)}`)
+      log({
+        verbose: verbose,
+        type: 'info',
+        message: `Sending ${action} with payload ${JSON.stringify(payload)}`
+      });
       channelRef.current.perform(action, payload);
     } catch {
       throw 'useActionCable - ERROR: Unknown error';
