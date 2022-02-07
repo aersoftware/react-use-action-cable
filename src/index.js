@@ -146,8 +146,8 @@ export function useChannel(actionCable, {verbose} = {verbose: false}) {
   };
 
   const perform = (action, payload) => {
-    if (subscribed && !connected) throw 'useActionCable - ERROR: not connected';
-    if (!subscribed) throw 'useActionCable - ERROR: not subscribed';
+    if (subscribed && !connected) throw 'useActionCable: not connected';
+    if (!subscribed) throw 'useActionCable: not subscribed';
     try {
       log({
         verbose: verbose,
@@ -156,7 +156,7 @@ export function useChannel(actionCable, {verbose} = {verbose: false}) {
       });
       channelRef.current.perform(action, payload);
     } catch {
-      throw 'useActionCable - ERROR: Unknown error';
+      throw 'useActionCable: Unknown error';
     }
   };
 
