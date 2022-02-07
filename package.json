@@ -1,6 +1,6 @@
 {
   "name": "@aersoftware/react-use-action-cable",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Hooks to easily use Rails Action Cable in your React (Native) application",
   "main": "dist/index.js",
   "scripts": {
