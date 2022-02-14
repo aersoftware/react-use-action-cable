@@ -118,7 +118,7 @@ export function useChannel(actionCable, {verbose} = {verbose: false}) {
     const action = queue[0];
 
     try {
-      perform(action.type, action.payload);
+      perform(action.action, action.payload);
       setQueue(prevState => {
         let q = [...prevState];
         q.shift();
@@ -128,7 +128,7 @@ export function useChannel(actionCable, {verbose} = {verbose: false}) {
       log({
         verbose: verbose,
         type: 'warn',
-        message: `Unable to perform ${action}. It will stay at the front of the queue.`
+        message: `Unable to perform action '${action.action}'. It will stay at the front of the queue.`
       });
     }
   };
@@ -140,7 +140,7 @@ export function useChannel(actionCable, {verbose} = {verbose: false}) {
       message: `Adding action to queue - ${action}: ${JSON.stringify(payload)}`
     });
     setQueue(prevState => [...prevState, {
-      type: action,
+      action: action,
       payload: payload
     }]);
   };

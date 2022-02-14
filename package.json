@@ -1,10 +1,10 @@
 {
   "name": "@aersoftware/react-use-action-cable",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hooks to easily use Rails Action Cable in your React (Native) application",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest src/index.spec.js --coverage",
     "prebuild": "npm i",
     "build": "babel src --out-dir dist"
   },
@@ -24,12 +24,25 @@
     "@rails/actioncable": "^7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.7",
     "@babel/cli": "^7.16.7",
-    "copyfiles": "^2.4.1"
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@testing-library/react": "^12.1.2",
+    "copyfiles": "^2.4.1",
+    "jest": "^27.5.1"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "rails",
+    "cable",
+    "actioncable",
+    "socket",
+    "websocket"
+  ]
 }
