@@ -1,6 +1,6 @@
 {
   "name": "@aersoftware/react-use-action-cable",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Hooks to easily use Rails Action Cable in your React (Native) application",
   "main": "dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^17.0.1"
+    "react": "^17.0.1 || ^18.2.0"
   },
   "dependencies": {
     "@rails/actioncable": "^7.0.0"
@@ -28,7 +28,7 @@
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/react": "^14.0.0",
     "copyfiles": "^2.4.1",
     "jest": "^27.5.1"
   },
